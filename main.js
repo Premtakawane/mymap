@@ -22,6 +22,16 @@ const tileUrl = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
 
 // const tileUrl = "https://tile.openstreetmap.bzh/br/{z}/{x}/{y}.png ";
 
+// -----------------------------------------------------------
+
+// map.locate({
+//   setView: true,
+//   maxZoom: 16,
+//   enableHighAccuracy: true,
+// });
+
+// -----------------------------------------------------------
+
 const attribution =
   '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Coded by coder\'s gyan with ❤';
 
@@ -140,3 +150,133 @@ const Railwaymarker = L.marker([19.94836534697497, 73.84205957116409], {
 
 Railwaymarker.addTo(map);
 Railwaymarker.bindPopup("<h1>Nashik Road - Railway Station</h1>");
+
+// map.on("locationfound", function (e) {
+//   L.marker(e.latlng).addTo(map).bindPopup("📍 You are here").openPopup();
+
+//   L.circle(e.latlng, {
+//     radius: e.accuracy,
+//   }).addTo(map);
+// });
+
+// const userMarker = L.marker([0, 0]).addTo(map).bindPopup("📍 You are here");
+
+// navigator.geolocation.watchPosition(
+//   function (position) {
+//     const lat = position.coords.latitude;
+//     const lng = position.coords.longitude;
+
+//     userMarker.setLatLng([lat, lng]);
+//   },
+//   function (error) {
+//     console.log(error);
+//   },
+//   {
+//     enableHighAccuracy: true,
+//   },
+// );
+
+// let userCircle;
+
+// const userMarker = L.marker([0, 0]).addTo(map).bindPopup("📍 You are here");
+
+// const userMarker = L.marker([0, 0])
+//   .addTo(map)
+//   .bindPopup("📍 You are here")
+//   .openPopup();
+
+// navigator.geolocation.watchPosition(
+//   function (position) {
+//     const lat = position.coords.latitude;
+//     const lng = position.coords.longitude;
+
+//     userMarker.setLatLng([lat, lng]);
+
+//     // userMarker.openPopup();
+
+//     map.setView([lat, lng], 16);
+
+//     if (userCircle) {
+//       map.removeLayer(userCircle);
+//     }
+
+//     userCircle = L.circle([lat, lng], {
+//       radius: position.coords.accuracy,
+//     }).addTo(map);
+//   },
+//   function (error) {
+//     console.log(error);
+//   },
+//   {
+//     enableHighAccuracy: true,
+//   },
+// );
+
+// map.on("locationerror", function () {
+//   alert("Location not shared. You can still explore the map.");
+// });
+
+// =====================================================
+// USER LIVE LOCATION
+// =====================================================
+
+// Keeps track of whether the map has already moved
+let firstLocationFound = false;
+
+// Stores blue accuracy circle
+let userCircle;
+
+// Create user marker
+const userMarker = L.marker([0, 0]).addTo(map).bindPopup("📍 You are here");
+
+// Watch user's GPS location continuously
+navigator.geolocation.watchPosition(
+  function (position) {
+    const lat = position.coords.latitude;
+    const lng = position.coords.longitude;
+    const accuracy = position.coords.accuracy;
+
+    // Move marker to current position
+    userMarker.setLatLng([lat, lng]);
+
+    // Open popup only first time
+    if (!firstLocationFound) {
+      userMarker.openPopup();
+
+      // Move map to user's location once
+      map.setView([lat, lng], 16);
+
+      firstLocationFound = true;
+    }
+
+    // Remove previous accuracy circle
+    if (userCircle) {
+      map.removeLayer(userCircle);
+    }
+
+    // Create new accuracy circle
+    userCircle = L.circle([lat, lng], {
+      radius: accuracy,
+      color: "#3388ff",
+      fillColor: "#3388ff",
+      fillOpacity: 0.2,
+    }).addTo(map);
+  },
+
+  // Error callback
+  function (error) {
+    console.log("Location Error:", error);
+
+    // User denied permission
+    if (error.code === 1) {
+      alert("Location permission denied. Map will continue normally.");
+    }
+  },
+
+  // GPS settings
+  {
+    enableHighAccuracy: true,
+    maximumAge: 0,
+    timeout: 5000,
+  },
+);
