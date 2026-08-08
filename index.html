@@ -3,16 +3,38 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>leaflet Map</title>
+    <title>My Nashik Map</title>
     <link
       rel="stylesheet"
       href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
       integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
       crossorigin=""
     />
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
+    <aside class="map-panel" aria-label="Map controls">
+      <p class="eyebrow">MY MAP</p>
+      <h1>Nashik, my way.</h1>
+      <p class="intro">A personal collection of useful places, landmarks, and memories around Nashik.</p>
+
+      <button id="locate-me" class="locate-button" type="button">Locate me</button>
+      <p id="location-status" class="location-status" aria-live="polite"></p>
+
+      <div class="divider"></div>
+
+      <p class="section-label">Show places</p>
+      <div class="filter-list" role="group" aria-label="Filter map locations">
+        <button class="filter-button active" type="button" data-category="all">All places</button>
+        <button class="filter-button" type="button" data-category="office">Work</button>
+        <button class="filter-button" type="button" data-category="spiritual">Spiritual</button>
+        <button class="filter-button" type="button" data-category="travel">Travel</button>
+        <button class="filter-button" type="button" data-category="landmark">Landmarks</button>
+      </div>
+
+      <div class="divider"></div>
+      <p class="privacy-note">Your home location is kept private and is not shown on this public map.</p>
+    </aside>
     <div id="map"></div>
 
     <script
@@ -21,6 +43,6 @@
       crossorigin=""
     ></script>
 
-    <script src="main.js"></script>
+    <script src="js/main.js"></script>
   </body>
 </html>
